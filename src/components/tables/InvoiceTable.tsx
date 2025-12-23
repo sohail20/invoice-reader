@@ -76,11 +76,11 @@ export default function InvoiceTable() {
           {/* Header */}
           <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
             <TableRow>
-              <TableCell isHeader>Invoice #</TableCell>
-              <TableCell isHeader>Customer</TableCell>
-              <TableCell isHeader>Invoice Date</TableCell>
-              <TableCell isHeader>Total Amount</TableCell>
-              <TableCell isHeader>Status</TableCell>
+              <TableCell className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400" isHeader>Invoice #</TableCell>
+              <TableCell className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400" isHeader>Customer</TableCell>
+              <TableCell className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400" isHeader>Invoice Date</TableCell>
+              <TableCell className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400" isHeader>Total Amount</TableCell>
+              <TableCell className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400" isHeader>Status</TableCell>
             </TableRow>
           </TableHeader>
 
@@ -88,11 +88,11 @@ export default function InvoiceTable() {
           <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
             {rows.map((row) => (
               <TableRow key={row.id}>
-                <TableCell>{row.invoiceNumber}</TableCell>
-                <TableCell>{row.customerName}</TableCell>
-                <TableCell>{row.invoiceDate}</TableCell>
-                <TableCell>{row.totalAmount}</TableCell>
-                <TableCell>
+                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">{row.invoiceNumber}</TableCell>
+                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">{row.customerName}</TableCell>
+                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">{row.invoiceDate}</TableCell>
+                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">{row.totalAmount}</TableCell>
+                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                   <Badge
                     size="sm"
                     color={
