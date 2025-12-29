@@ -1,12 +1,12 @@
-import BasicTableOne from "@/components/tables/BasicTableOne";
+// import BasicTableOne from "@/components/tables/BasicTableOne";
 import InvoiceTable from "@/components/tables/InvoiceTable";
 import Button from "@/components/ui/button/Button";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
     title:
-        "Modrik Dashboard | AdminPanel",
-    description: "SAAS Base Modrik Dashboard",
+        "Invoice Reader Invoice | AdminPanel",
+    description: "SAAS Base Invoice Reader Dashboard",
 };
 export default function Invoices() {
     return (

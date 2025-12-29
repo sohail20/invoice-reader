@@ -1,16 +1,16 @@
-# Modrik Next.js - Free Next.js Tailwind Admin Dashboard Template
+# Invoice Reader Next.js - Free Next.js Tailwind Admin Dashboard Template
 
-Modrik is a free and open-source admin dashboard template built on **Next.js and Tailwind CSS** providing developers with everything they need to create a feature-rich and data-driven: back-end, dashboard, or admin panel solution for any sort of web project.
+Invoice Reader is a free and open-source admin dashboard template built on **Next.js and Tailwind CSS** providing developers with everything they need to create a feature-rich and data-driven: back-end, dashboard, or admin panel solution for any sort of web project.
 
-![Modrik - Next.js Dashboard Preview](./banner.png)
+![Invoice Reader - Next.js Dashboard Preview](./banner.png)
 
-With Modrik Next.js, you get access to all the necessary dashboard UI components, elements, and pages required to build a high-quality and complete dashboard or admin panel. Whether you're building a dashboard or admin panel for a complex web application or a simple website.
+With Invoice Reader Next.js, you get access to all the necessary dashboard UI components, elements, and pages required to build a high-quality and complete dashboard or admin panel. Whether you're building a dashboard or admin panel for a complex web application or a simple website.
 
-Modrik utilizes the powerful features of **Next.js 16** and common features of Next.js such as server-side rendering (SSR), static site generation (SSG), and seamless API route integration. Combined with the advancements of **React 19** and the robustness of **TypeScript**, Modrik is the perfect solution to help get your project up and running quickly.
+Invoice Reader utilizes the powerful features of **Next.js 16** and common features of Next.js such as server-side rendering (SSR), static site generation (SSG), and seamless API route integration. Combined with the advancements of **React 19** and the robustness of **TypeScript**, Invoice Reader is the perfect solution to help get your project up and running quickly.
 
 ## Overview
 
-Modrik provides essential UI components and layouts for building feature-rich, data-driven admin dashboards and control panels. It's built on:
+Invoice Reader provides essential UI components and layouts for building feature-rich, data-driven admin dashboards and control panels. It's built on:
 
 * Next.js 16.x
 * React 19
@@ -22,7 +22,7 @@ Modrik provides essential UI components and layouts for building feature-rich, d
 
 ### Prerequisites
 
-To get started with Modrik, ensure you have the following prerequisites installed and set up:
+To get started with Invoice Reader, ensure you have the following prerequisites installed and set up:
 
 * Node.js 18.x or later (recommended to use Node.js 20.x or later)
 
@@ -56,7 +56,7 @@ zip
 
 ## Components
 
-Modrik is a pre-designed starting point for building a web-based dashboard using Next.js and Tailwind CSS. The template includes:
+Invoice Reader is a pre-designed starting point for building a web-based dashboard using Next.js and Tailwind CSS. The template includes:
 
 * Sophisticated and accessible sidebar
 * Data visualization components
@@ -83,7 +83,7 @@ All components are built with React and styled using Tailwind CSS for easy custo
 * Complete Figma design file
 * Email support
 
-To learn more about pro version features and pricing, visit our [pricing page](https://Modrik.com/pricing).
+To learn more about pro version features and pricing, visit our [pricing page](https://Invoice Reader.com/pricing).
 
 ## Changelog
 
@@ -121,7 +121,7 @@ A major update focused on Next.js 16 implementation and comprehensive redesign.
 * Chart components now use ApexCharts for React
 * Authentication flow updated to use Server Actions and middleware
 
-[Read more](https://Modrik.com/docs/update-logs/nextjs) on this release.
+[Read more](https://Invoice Reader.com/docs/update-logs/nextjs) on this release.
 
 ### v1.3.4 (July 01, 2024)
 
@@ -152,7 +152,7 @@ A major update focused on Next.js 16 implementation and comprehensive redesign.
 
 ## License
 
-Modrik Next.js Free Version is released under the MIT License.
+Invoice Reader Next.js Free Version is released under the MIT License.
 
 ## Support
 If you find this project helpful, please consider giving it a star on GitHub. Your support helps us continue developing and maintaining this template.

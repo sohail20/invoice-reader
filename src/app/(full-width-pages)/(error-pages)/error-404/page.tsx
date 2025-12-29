@@ -6,8 +6,8 @@ import React from "react";
 
 export const metadata: Metadata = {
   title:
-    "Modrik Dashboard | AdminPanel",
-  description: "SAAS Base Modrik Dashboard",
+    "Invoice Reader Dashboard | AdminPanel",
+  description: "SAAS Base Invoice Reader Dashboard",
 };
 
 export default function Error404() {

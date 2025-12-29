@@ -46,9 +46,13 @@ export default function SelectInputs() {
       const formData = new FormData();
       formData.append("engine", engine);
       formData.append("file", file);
+      const token = localStorage.getItem("token");
 
       const res = await fetch("http://localhost:8000/ocr", {
         method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`, // IMPORTANT
+          },
         body: formData,
       });
 

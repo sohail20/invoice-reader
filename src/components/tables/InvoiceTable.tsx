@@ -16,6 +16,7 @@ interface InvoiceRow {
   customerName: string;
   invoiceDate: string;
   totalAmount: string;
+  engine: string;
   status: string;
 }
 
@@ -34,7 +35,13 @@ export default function InvoiceTable() {
   useEffect(() => {
     const fetchInvoices = async () => {
       try {
-        const res = await fetch("http://localhost:8000/invoices");
+        const token = localStorage.getItem("token");
+
+        const res = await fetch("http://localhost:8000/invoices", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const data = await res.json();
 
         const mapped: InvoiceRow[] = data.map((inv: any) => {
@@ -50,6 +57,8 @@ export default function InvoiceTable() {
               extracted?.invoice_details?.invoice_date || "-",
             totalAmount:
               extracted?.totals?.net_amount_with_vat || "-",
+            engine:
+              inv?.engine || "-",
             status: inv.status,
           };
         });
@@ -80,6 +89,7 @@ export default function InvoiceTable() {
               <TableCell className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400" isHeader>Customer</TableCell>
               <TableCell className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400" isHeader>Invoice Date</TableCell>
               <TableCell className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400" isHeader>Total Amount</TableCell>
+              <TableCell className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400" isHeader>Engine</TableCell>
               <TableCell className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400" isHeader>Status</TableCell>
             </TableRow>
           </TableHeader>
@@ -92,6 +102,7 @@ export default function InvoiceTable() {
                 <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">{row.customerName}</TableCell>
                 <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">{row.invoiceDate}</TableCell>
                 <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">{row.totalAmount}</TableCell>
+                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">{row.engine}</TableCell>
                 <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                   <Badge
                     size="sm"
