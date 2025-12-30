@@ -11,7 +11,7 @@ export const EcommerceMetrics = () => {
   useEffect(() => {
     const fetchAnalytics = async () => {
       try {
-        const res = await fetch("http://localhost:8000/invoices/analytics");
+        const res = await fetch("http://213.199.62.14:8000/invoices/analytics");
         if (!res.ok) throw new Error("Failed to fetch analytics");
         const data = await res.json();
         setAnalytics({

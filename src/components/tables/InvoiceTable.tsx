@@ -37,7 +37,7 @@ export default function InvoiceTable() {
       try {
         const token = localStorage.getItem("token");
 
-        const res = await fetch("http://localhost:8000/invoices", {
+        const res = await fetch("http://213.199.62.14:8000/invoices", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
