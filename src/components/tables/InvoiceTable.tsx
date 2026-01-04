@@ -9,6 +9,8 @@ import {
   TableRow,
 } from "../ui/table";
 import Badge from "../ui/badge/Badge";
+import Button from "../ui/button/Button";
+import { EyeIcon } from "@/icons";
 
 interface InvoiceRow {
   id: number;
@@ -20,6 +22,17 @@ interface InvoiceRow {
   status: string;
 }
 
+interface Product {
+  id: number;
+  name: string;
+  type: string;
+  pages: string;
+  source: string;
+  processedAt?: string;
+  status: "Processed" | "Pending" | "Canceled";
+  image?: string;
+}
+
 const parseExtractedJson = (value: string) => {
   try {
     return JSON.parse(value.replace(/'/g, '"'));
@@ -29,41 +42,47 @@ const parseExtractedJson = (value: string) => {
 };
 
 export default function InvoiceTable() {
-  const [rows, setRows] = useState<InvoiceRow[]>([]);
+  const [tableData, setTableData] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchInvoices = async () => {
       try {
         const token = localStorage.getItem("token");
-
-        const res = await fetch("http://213.199.62.14:8000/invoices", {
+        //213.199.62.14
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/invoices?limit=20`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
+
         const data = await res.json();
 
-        const mapped: InvoiceRow[] = data.map((inv: any) => {
+        const mapped: Product[] = data.map((inv: any) => {
           const extracted = parseExtractedJson(inv.extracted_json);
 
           return {
             id: inv.id,
-            invoiceNumber:
-              extracted?.invoice_details?.invoice_number || "-",
-            customerName:
-              extracted?.customer_details?.customer_name || "-",
-            invoiceDate:
+            name:
+              extracted?.invoice_details?.invoice_number ||
+              inv.file_name ||
+              "Invoice",
+            type: "pdf",
+            pages:
+              extracted?.invoice_details?.page_count?.toString() || "-",
+            source: inv.engine || "OLM OCR",
+            processedAt:
               extracted?.invoice_details?.invoice_date || "-",
-            totalAmount:
-              extracted?.totals?.net_amount_with_vat || "-",
-            engine:
-              inv?.engine || "-",
-            status: inv.status,
+            status:
+              inv.status === "processed"
+                ? "Processed"
+                : inv.status === "pending"
+                  ? "Pending"
+                  : "Canceled",
           };
         });
 
-        setRows(mapped);
+        setTableData(mapped);
       } catch (error) {
         console.error("Failed to fetch invoices", error);
       } finally {
@@ -79,43 +98,50 @@ export default function InvoiceTable() {
   }
 
   return (
-    <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
+    <div className="overflow-hidden bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6">
+      {/* Table */}
       <div className="max-w-full overflow-x-auto">
         <Table>
-          {/* Header */}
-          <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
+          <TableHeader className="border-y">
             <TableRow>
-              <TableCell className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400" isHeader>Invoice #</TableCell>
-              <TableCell className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400" isHeader>Customer</TableCell>
-              <TableCell className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400" isHeader>Invoice Date</TableCell>
-              <TableCell className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400" isHeader>Total Amount</TableCell>
-              <TableCell className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400" isHeader>Engine</TableCell>
-              <TableCell className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400" isHeader>Status</TableCell>
+              <TableCell isHeader className="py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">Document</TableCell>
+              <TableCell isHeader className="py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">Type</TableCell>
+              <TableCell isHeader className="py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">Status</TableCell>
+              <TableCell isHeader className="py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">Pages</TableCell>
+              <TableCell isHeader className="py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">Source</TableCell>
+              <TableCell isHeader className="py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">Processed At</TableCell>
             </TableRow>
           </TableHeader>
 
-          {/* Body */}
-          <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
-            {rows.map((row) => (
-              <TableRow key={row.id}>
-                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">{row.invoiceNumber}</TableCell>
-                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">{row.customerName}</TableCell>
-                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">{row.invoiceDate}</TableCell>
-                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">{row.totalAmount}</TableCell>
-                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">{row.engine}</TableCell>
-                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+          <TableBody>
+            {tableData.map((product) => (
+              <TableRow key={product.id}>
+                <TableCell className="py-3 text-gray-500 text-theme-sm dark:text-gray-400">
+                  <p className="font-medium">{product.name}</p>
+                </TableCell>
+
+                <TableCell className="py-3 text-gray-500 text-theme-sm dark:text-gray-400">{product.type}</TableCell>
+
+                <TableCell className="py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                   <Badge
                     size="sm"
                     color={
-                      row.status === "processed"
+                      product.status === "Processed"
                         ? "success"
-                        : row.status === "pending"
-                        ? "warning"
-                        : "error"
+                        : product.status === "Pending"
+                          ? "warning"
+                          : "error"
                     }
                   >
-                    {row.status}
+                    {product.status}
                   </Badge>
+                </TableCell>
+
+                <TableCell className="py-3 text-gray-500 text-theme-sm dark:text-gray-400">{product.pages}</TableCell>
+                <TableCell className="py-3 text-gray-500 text-theme-sm dark:text-gray-400">{product.source}</TableCell>
+                <TableCell className="py-3 text-gray-500 text-theme-sm dark:text-gray-400">{product.processedAt}</TableCell>
+                <TableCell className="py-3 text-gray-500 text-theme-sm dark:text-gray-400">
+                  <Button size="sm" variant="outline" startIcon={<EyeIcon/>} href={`/invoices/${product.id}`}>View</Button>
                 </TableCell>
               </TableRow>
             ))}

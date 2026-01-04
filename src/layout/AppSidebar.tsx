@@ -10,13 +10,21 @@ import {
   ChevronDownIcon,
   GridIcon,
   HorizontaLDots,
-  FileIcon
-  // ListIcon,
-  // PageIcon,
-  // PieChartIcon,
-  // PlugInIcon,
-  // TableIcon,
-  // UserCircleIcon,
+  FileIcon,
+  ListIcon,
+  PageIcon,
+  PieChartIcon,
+  UserIcon,
+  PlugInIcon,
+  TableIcon,
+  LockIcon,
+  UserCircleIcon,
+  BoxCubeIcon,
+  GroupIcon,
+  DollarLineIcon,
+  DocsIcon,
+  BoltIcon,
+  FolderIcon
 } from "../icons/index";
 import SidebarWidget from "./SidebarWidget";
 
@@ -35,9 +43,39 @@ const navItems: NavItem[] = [
     // subItems: [{ name: "Ecommerce", path: "/", pro: false }],
   },
   {
+    icon: <FolderIcon />,
+    name: "Documents",
+    path: "/documents",
+  },
+    {
+    icon: <BoltIcon />,
+    name: "OCR Workflow",
+    path: "/workflow",
+  },
+    {
     icon: <FileIcon />,
-    name: "Processed Invoices",
-    path: "/invoices",
+    name: "File Manager",
+    path: "/file-manager",
+  },
+    {
+    icon: <GroupIcon />,
+    name: "Users",
+    path: "/users",
+  },
+    {
+    icon: <LockIcon />,
+    name: "Roles",
+    path: "/roles",
+  },
+    {
+    icon: <ListIcon />,
+    name: "Logs",
+    path: "/logs",
+  },
+    {
+    icon: <FileIcon />,
+    name: "API Keys",
+    path: "/api-keys",
   },
   // {
   //   icon: <CalenderIcon />,
@@ -70,36 +108,31 @@ const navItems: NavItem[] = [
   // },
 ];
 
-// const othersItems: NavItem[] = [
-//   {
-//     icon: <PieChartIcon />,
-//     name: "Charts",
-//     subItems: [
-//       { name: "Line Chart", path: "/line-chart", pro: false },
-//       { name: "Bar Chart", path: "/bar-chart", pro: false },
-//     ],
-//   },
-//   {
-//     icon: <BoxCubeIcon />,
-//     name: "UI Elements",
-//     subItems: [
-//       { name: "Alerts", path: "/alerts", pro: false },
-//       { name: "Avatar", path: "/avatars", pro: false },
-//       { name: "Badge", path: "/badge", pro: false },
-//       { name: "Buttons", path: "/buttons", pro: false },
-//       { name: "Images", path: "/images", pro: false },
-//       { name: "Videos", path: "/videos", pro: false },
-//     ],
-//   },
-//   {
-//     icon: <PlugInIcon />,
-//     name: "Authentication",
-//     subItems: [
-//       { name: "Sign In", path: "/signin", pro: false },
-//       { name: "Sign Up", path: "/signup", pro: false },
-//     ],
-//   },
-// ];
+const billingItems: NavItem[] = [
+  {
+    icon: <DocsIcon />,
+    name: "Billing",
+    path: "/billing",
+  },
+  {
+    icon: <DollarLineIcon />,
+    name: "Invoices",
+    path: "/billing/invoices",
+  }
+];
+
+const workspaceItems: NavItem[] = [
+  {
+    icon: <GridIcon />,
+    name: "Settings",
+    path: "/settings",
+  },
+  {
+    icon: <UserCircleIcon />,
+    name: "Support",
+    path: "/support",
+  }
+];
 
 const AppSidebar: React.FC = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
@@ -107,7 +140,7 @@ const AppSidebar: React.FC = () => {
 
   const renderMenuItems = (
     navItems: NavItem[],
-    menuType: "main" | "others"
+    menuType: "billing" | "workspace" | "main"
   ) => (
     <ul className="flex flex-col gap-4">
       {navItems.map((nav, index) => (
@@ -232,7 +265,7 @@ const AppSidebar: React.FC = () => {
   );
 
   const [openSubmenu, setOpenSubmenu] = useState<{
-    type: "main" | "others";
+    type: "billing" | "workspace" | "main";
     index: number;
   } | null>(null);
   const [subMenuHeight, setSubMenuHeight] = useState<Record<string, number>>(
@@ -246,14 +279,14 @@ const AppSidebar: React.FC = () => {
   useEffect(() => {
     // Check if the current path matches any submenu item
     let submenuMatched = false;
-    ["main", "others"].forEach((menuType) => {
+    ["billing", "workspace", "main"].forEach((menuType) => {
       const items = navItems ///menuType === "main" ? navItems : othersItems;
       items.forEach((nav, index) => {
         if (nav.subItems) {
           nav.subItems.forEach((subItem) => {
             if (isActive(subItem.path)) {
               setOpenSubmenu({
-                type: menuType as "main" | "others",
+                type: menuType as "billing" | "workspace" | "main",
                 index,
               });
               submenuMatched = true;
@@ -282,7 +315,7 @@ const AppSidebar: React.FC = () => {
     }
   }, [openSubmenu]);
 
-  const handleSubmenuToggle = (index: number, menuType: "main" | "others") => {
+  const handleSubmenuToggle = (index: number, menuType: "billing" | "workspace" | "main") => {
     setOpenSubmenu((prevOpenSubmenu) => {
       if (
         prevOpenSubmenu &&
@@ -364,7 +397,7 @@ const AppSidebar: React.FC = () => {
               {renderMenuItems(navItems, "main")}
             </div>
 
-            {/* <div className="">
+            <div className="">
               <h2
                 className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${
                   !isExpanded && !isHovered
@@ -373,16 +406,33 @@ const AppSidebar: React.FC = () => {
                 }`}
               >
                 {isExpanded || isHovered || isMobileOpen ? (
-                  "Others"
+                  "Billing"
                 ) : (
                   <HorizontaLDots />
                 )}
               </h2>
-              {renderMenuItems(othersItems, "others")}
-            </div> */}
+              {renderMenuItems(billingItems, "billing")}
+            </div>
+
+            <div className="">
+              <h2
+                className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${
+                  !isExpanded && !isHovered
+                    ? "lg:justify-center"
+                    : "justify-start"
+                }`}
+              >
+                {isExpanded || isHovered || isMobileOpen ? (
+                  "Workspace"
+                ) : (
+                  <HorizontaLDots />
+                )}
+              </h2>
+              {renderMenuItems(workspaceItems, "workspace")}
+            </div>
           </div>
         </nav>
-        {/* {isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null} */}
+        {isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null}
       </div>
     </aside>
   );

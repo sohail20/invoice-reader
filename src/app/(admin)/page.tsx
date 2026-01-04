@@ -8,7 +8,7 @@ export default function HomePage() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-
+    console.log("Token:", token);
     if (token) {
       // User is logged in, navigate to dashboard
       router.replace("/dashboard");
