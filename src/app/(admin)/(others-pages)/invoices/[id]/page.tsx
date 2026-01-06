@@ -113,7 +113,7 @@ function ExtractedFields({ data }: { data: any }) {
 }
 
 function DocumentPreview({ invoice }: { invoice: any }) {
-  const fileUrl = `http://localhost:8000/api/v1/invoices/${invoice.id}/file`;
+  const fileUrl = `${process.env.NEXT_PUBLIC_API_URL}/invoices/${invoice.id}/file`;
   const isPDF = invoice.filename.toLowerCase().endsWith(".pdf");
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const token = localStorage.getItem("token");
