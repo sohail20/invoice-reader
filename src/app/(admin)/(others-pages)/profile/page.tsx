@@ -1,15 +1,20 @@
+'use client'
 import UserAddressCard from "@/components/user-profile/UserAddressCard";
 import UserInfoCard from "@/components/user-profile/UserInfoCard";
 import UserMetaCard from "@/components/user-profile/UserMetaCard";
-import { Metadata } from "next";
-import React from "react";
+import { useGetMeQuery } from "@/store/services/authApi";
 
-export const metadata: Metadata = {
-  title:
-    "Invoice Reader Dashboard | AdminPanel",
-  description: "SAAS Base Invoice Reader Dashboard",
-};
 export default function Profile() {
+  const { data: me, isLoading, isError } = useGetMeQuery();
+
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+
+  if (isError) {
+    return <div className="p-4 text-red-500">Failed to load roles</div>;
+  }
+
   return (
     <div>
       <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] lg:p-6">
@@ -17,9 +22,11 @@ export default function Profile() {
           Profile
         </h3>
         <div className="space-y-6">
-          <UserMetaCard />
-          <UserInfoCard />
-          <UserAddressCard />
+          {me && <>
+            <UserMetaCard me={me} />
+            {/* <UserInfoCard />
+            <UserAddressCard /> */}
+          </>}
         </div>
       </div>
     </div>

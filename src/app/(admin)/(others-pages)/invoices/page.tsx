@@ -17,7 +17,7 @@ export default function Invoices() {
                     <h3 className="mb-5 text-lg font-semibold text-gray-800 dark:text-white/90 lg:mb-7">
                         Process Invoices
                     </h3>
-                    <Button variant="outline" href={`/invoices/create`} className="mb-4">Add Invoice</Button>
+                    <Button variant="primary" size="sm" href={`/invoices/create`} className="mb-4">Add Invoice</Button>
                 </div>
 
                 <div className="space-y-6">

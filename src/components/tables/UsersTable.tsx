@@ -5,18 +5,19 @@ import GenericTable, { Column } from "@/components/common/GenericTable";
 import Badge from "../ui/badge/Badge";
 import Button from "../ui/button/Button";
 import { EyeIcon } from "@/icons";
+import { formatDateDDMMYYYY } from "@/utils/helper";
 
 interface Product {
   id: number;
   name: string;
-  type: string;
-  pages: string;
-  source: string;
-  processedAt?: string;
+  email: string;
+  created_at: string;
+  is_active: string;
+  roles: string[]
   status: "Processed" | "Pending" | "Canceled";
 }
 
-export default function InvoiceTable() {
+export default function UsersTable() {
   const [data, setData] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -24,7 +25,7 @@ export default function InvoiceTable() {
     const fetchInvoices = async () => {
       const token = localStorage.getItem("token");
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/invoices?limit=20`,
+        `${process.env.NEXT_PUBLIC_API_URL}/users?limit=20`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -32,19 +33,13 @@ export default function InvoiceTable() {
 
       const raw = await res.json();
 
-      const mapped: Product[] = raw.map((inv: any) => ({
-        id: inv.id,
-        name: inv.file_name || "Invoice",
-        type: "pdf",
-        pages: inv.page_count?.toString() || "-",
-        source: inv.engine || "OCR",
-        processedAt: inv.invoice_date || "-",
-        status:
-          inv.status === "processed"
-            ? "Processed"
-            : inv.status === "pending"
-            ? "Pending"
-            : "Canceled",
+      const mapped: Product[] = raw.map((user: any) => ({
+        id: user.id,
+        name: user.name || "Invoice",
+        email: user.email,
+        created_at: formatDateDDMMYYYY(user.created_at) || "-",
+        is_active: user.is_active || "OCR",
+        roles: user.roles || "-",
       }));
 
       setData(mapped);
@@ -56,32 +51,28 @@ export default function InvoiceTable() {
 
   const columns: Column<Product>[] = [
     {
-      key: "name",
-      header: "Document",
-      render: (row) => <p className="font-medium">{row.name}</p>,
+      key: "id",
+      header: "ID",
+      render: (row) => <p className="font-medium">{row.id}</p>,
     },
-    { key: "type", header: "Type" },
+    { key: "name", header: "Name" },
+    { key: "email", header: "Email" },
+    { key: "created_at", header: "Create At" },
+    { key: "is_active", header: "Active" },
     {
-      key: "status",
+      key: "roles",
       header: "Status",
       render: (row) => (
         <Badge
           size="sm"
           color={
-            row.status === "Processed"
-              ? "success"
-              : row.status === "Pending"
-              ? "warning"
-              : "error"
+            row?.roles?.length > 1 ? "success" : "warning"
           }
         >
-          {row.status}
+          {row?.roles?.length > 1 ? "Multiple Roles" : row?.roles[0] || "-"}
         </Badge>
       ),
     },
-    { key: "pages", header: "Pages" },
-    { key: "source", header: "Source" },
-    { key: "processedAt", header: "Processed At" },
     {
       key: "actions",
       header: "Actions",
@@ -90,7 +81,7 @@ export default function InvoiceTable() {
           size="sm"
           variant="outline"
           startIcon={<EyeIcon />}
-          href={`/invoices/${row.id}`}
+          href={`/users/${row.id}`}
         >
           View
         </Button>

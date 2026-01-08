@@ -2,14 +2,25 @@
 
 import RecentOrders from "@/components/ecommerce/RecentOrders";
 import KeyMetrics from "@/components/keymetrics/KeyMetrics";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import GenericSelect from "@/components/form/form-elements/SelectInputs";
 import Input from "@/components/form/input/InputField";
 import DropzoneComponent from "@/components/form/form-elements/DropZone";
 import Button from "@/components/ui/button/Button";
 import { DownloadIcon, UploadIcon } from "@/icons";
+import { useGetRolesQuery } from "@/store/services/rolesApi";
+import { useAppContext } from "@/context/AppContext";
 
 export default function Dashboard() {
+  const { setRoles } = useAppContext()
+  const { data, isLoading, isError } = useGetRolesQuery({ page: 1, limit: 10 });
+
+  // Set roles in AppContext when data changes
+  useEffect(() => {
+    if (data) {
+      setRoles(data.data || data); // store role names globally
+    }
+  }, [data, setRoles]);
 
   const options = [
     { value: "marketing", label: "Marketing" },

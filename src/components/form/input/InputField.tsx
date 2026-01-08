@@ -12,6 +12,7 @@ interface InputProps {
   max?: string;
   step?: number;
   disabled?: boolean;
+  value?: string | number;
   success?: boolean;
   error?: boolean;
   hint?: string; // Optional hint text
@@ -23,6 +24,7 @@ const Input: FC<InputProps> = ({
   name,
   placeholder,
   defaultValue,
+  value,
   onChange,
   className = "",
   min,
@@ -53,9 +55,11 @@ const Input: FC<InputProps> = ({
         type={type}
         id={id}
         name={name}
+        autoComplete=""
         placeholder={placeholder}
         defaultValue={defaultValue}
         onChange={onChange}
+        value={value}
         min={min}
         max={max}
         step={step}
